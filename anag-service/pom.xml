@@ -58,6 +58,9 @@
     <profiles>
         <profile>
             <id>on-docker</id>
+            <properties>
+                <dockerfile.skip>true</dockerfile.skip>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
