@@ -11,6 +11,11 @@
             <username>${env.MAVEN_REPO_USERNAME}</username>
             <password>${env.MAVEN_REPO_PASSWORD}</password>
         </server>
+        <server>
+            <id>172.30.148.65:5000</id>
+            <username>${env.DOCKER_HUB_USERNAME}</username>
+            <password>${env.DOCKER_HUB_PASSWORD}</password>
+        </server>
     </servers>
 
     <profiles>

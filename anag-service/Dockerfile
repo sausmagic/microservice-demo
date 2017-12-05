@@ -1,5 +1,13 @@
-FROM openjdk:8-jdk-alpine
+FROM fabric8/java-alpine-openjdk8-jdk
 VOLUME /tmp
+
 ARG JAR_FILE
-ADD ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ARG APP_FILENAME
+
+ADD ${JAR_FILE} /app/
+
+ENV JAVA_APP_JAR ${APP_FILENAME}
+ENV JAVA_OPTIONS -Djava.security.egd=file:/dev/./urandom
+ENV AB_OFF true
+
+EXPOSE 8080
