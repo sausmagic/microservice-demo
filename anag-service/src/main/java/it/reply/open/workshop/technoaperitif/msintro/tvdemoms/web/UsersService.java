@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/")
 public class UsersService {
 
     @Autowired
