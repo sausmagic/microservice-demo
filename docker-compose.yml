@@ -2,15 +2,25 @@ version: '3'
 services:
   anag-service:
     image: tv-demo-ms/tv-anag-service
+    depends_on:
+      - eureka-server
+    networks:
+      - microservices
+  edges-server:
+    image: tv-demo-ms/edge-server
     ports:
       - "8080:8080"
-    links:
+    depends_on:
+      - anag-service
       - eureka-server
+    networks:
+      - microservices
   eureka-server:
     image: tv-demo-ms/service-discovery
-    expose:
-      - "8761"
     ports:
       - "8761:8761"
     networks:
-      - default
+      - microservices
+
+networks:
+  microservices:
