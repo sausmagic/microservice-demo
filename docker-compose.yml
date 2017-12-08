@@ -1,0 +1,16 @@
+version: '3'
+services:
+  anag-service:
+    image: tv-demo-ms/tv-anag-service
+    ports:
+      - "8080:8080"
+    links:
+      - eureka-server
+  eureka-server:
+    image: tv-demo-ms/service-discovery
+    expose:
+      - "8761"
+    ports:
+      - "8761:8761"
+    networks:
+      - default
