@@ -102,6 +102,10 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>myMavenRepoRead</id>
+            <url>https://mymavenrepo.com/repo/G6nYBt0boGk6ZAxnYGeO/</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -122,6 +126,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 
 </project>
