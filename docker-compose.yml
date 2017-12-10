@@ -1,11 +1,21 @@
 version: '3'
 services:
+
+  # Inner architecture
   anag-service:
     image: tv-demo-ms/tv-anag-service
     depends_on:
       - eureka-server
     networks:
       - microservices
+  payment-service:
+    image: tv-demo-ms/tv-payment-service
+    links:
+      - mongodb
+    networks:
+      - microservices
+
+  # Outer architecture
   edges-server:
     image: tv-demo-ms/edge-server
     ports:
@@ -21,6 +31,13 @@ services:
       - "8761:8761"
     networks:
       - microservices
+
+  # databases
+  mongodb:
+    image: mongo
+    tmpfs:
+      - /data/db
+      - /data/configdb
 
 networks:
   microservices:
