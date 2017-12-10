@@ -24,22 +24,25 @@ public class PackagesService {
     private CustomerPackagesRepository customerPackagesRepository;
 
     @GetMapping("")
-    public Collection<Package> getAllAvailablePackages() {
+    public Collection<Package> getAllPackages() {
         return this.packagesRepository.findAll();
     }
 
-    @GetMapping("")
-    public Collection<Package> getPackagesForUser(@RequestParam("forUser") String userId) {
+    @GetMapping("/user/{userId}")
+    public Collection<Package> getPackagesForUser(@PathVariable String userId) {
         return this.customerPackagesRepository.findByCustomerId(userId)
                                               .map(CustomerPackage::getPackages)
                                               .orElse(Collections.emptyList());
     }
 
-    @PostMapping("/{packageCode}")
-    public void buyPackage(@NotNull @RequestBody String userId,
+    @PostMapping("/{packageCode}/user/{userId}")
+    public void buyPackage(@NotNull @PathVariable String userId,
                            @NotNull @PathVariable String packageCode) {
         final CustomerPackage customerInfo = this.customerPackagesRepository.findByCustomerId(userId)
-                .orElseGet(() -> new CustomerPackage(null ,userId, new ArrayList<>()));
+                                                                            .orElseGet(
+                                                                                    () -> new CustomerPackage(null,
+                                                                                                              userId,
+                                                                                                              new ArrayList<>()));
 
         final Optional<Package> desiredPackage = this.packagesRepository.findByCode(packageCode);
         if (desiredPackage.isPresent()) {
