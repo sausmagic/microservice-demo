@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: "voting-service"
+  datasource:
+    url: "jdbc:h2:mem:DEMO;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+    driverClassName: "org.h2.Driver"
+    username: "sa"
+    password: ""
+  jpa:
+    database-platform: "org.hibernate.dialect.H2Dialect"
+    hibernate:
+      ddl-auto: "create-drop"
+
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    statusPageUrlPath: /actuator/info
+    healthCheckUrlPath: /actuator/health
+
+server:
+  port: 0
+
+tvapp:
+  fedelity:
+    grant-points:
+      forVoting: 10
+
+---
+spring:
+    profiles: docker
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    preferIpAddress: true
+
+server:
+    port: 8080
