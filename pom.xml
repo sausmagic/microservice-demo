@@ -25,6 +25,7 @@
         <module>payment-service</module>
         <module>outer-architecture</module>
         <module>voting-service</module>
+        <module>fidelity-service</module>
     </modules>
 
     <properties>

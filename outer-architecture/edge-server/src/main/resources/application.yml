@@ -10,7 +10,6 @@ spring:
           - Path=/users/{userid}/packages
           filters:
           - SetPath=/packages/user/{userid}
-#          - AddRequestParameter=forUser,{userid}
           - Hystrix=paymentCommand
         - id: buy-package
           uri: lb://payment-service
@@ -57,6 +56,12 @@ spring:
           - Path=/polls/**
           filters:
           - Hystrix=votingCommand
+        - id: fidelity-functions
+          uri: lb://fidelity-service
+          predicates:
+          - Path=/rewards/**
+          filters:
+          - Hystrix=fidelityCommand
 
 hystrix:
   command:

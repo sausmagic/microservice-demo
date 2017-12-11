@@ -17,7 +17,7 @@ services:
     networks:
       - microservices
       - mongonet
-      - brokernet
+      - broker
   voting-service:
     image: tv-demo-ms/tv-voting-service
     links:
@@ -25,7 +25,16 @@ services:
       - eureka-server
     networks:
       - microservices
-      - brokernet
+      - broker
+  fidelity-service:
+    image: tv-demo-ms/tv-fidelity-service
+    links:
+      - anag-service
+      - message-broker
+      - eureka-server
+    networks:
+      - microservices
+      - broker
 
   # Outer architecture
   edges-server:
@@ -49,7 +58,7 @@ services:
     tempfs:
       - /var/lib/rabbitmq
     networks:
-      - brokernet
+      - broker
   mongodb:
     image: mongo
     tmpfs:
@@ -61,3 +70,4 @@ services:
 networks:
   microservices:
   mongonet:
+  broker:
