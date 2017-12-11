@@ -2,7 +2,6 @@ package it.reply.open.workshop.technoaperitif.msintro.tvdemoms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,7 +22,7 @@ public class PaymentServiceApplication {
     @Bean
     public Jackson2RepositoryPopulatorFactoryBean repositoryPopulator() {
         Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
-        factory.setResources(new Resource[] {new ClassPathResource("data.json")});
+        factory.setResources(new Resource[]{new ClassPathResource("data.json")});
         return factory;
     }
 

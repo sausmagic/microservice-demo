@@ -22,6 +22,7 @@
 
     <modules>
         <module>anag-service</module>
+        <module>payment-service</module>
         <module>outer-architecture</module>
     </modules>
 

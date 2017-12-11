@@ -12,8 +12,11 @@ services:
     image: tv-demo-ms/tv-payment-service
     links:
       - mongodb
+      - message-broker
+      - eureka-server
     networks:
       - microservices
+      - mongonet
 
   # Outer architecture
   edges-server:
@@ -22,6 +25,7 @@ services:
       - "8080:8080"
     depends_on:
       - anag-service
+      - payment-service
       - eureka-server
     networks:
       - microservices
@@ -31,13 +35,14 @@ services:
       - "8761:8761"
     networks:
       - microservices
-
-  # databases
   mongodb:
     image: mongo
     tmpfs:
       - /data/db
       - /data/configdb
+    networks:
+      - mongonet
 
 networks:
   microservices:
+  mongonet:
