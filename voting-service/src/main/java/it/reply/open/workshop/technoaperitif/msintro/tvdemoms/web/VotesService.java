@@ -1,5 +1,7 @@
 package it.reply.open.workshop.technoaperitif.msintro.tvdemoms.web;
 
+import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.collaborators.AnagService;
+import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.collaborators.dto.User;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.data.PollOptionsRepository;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.data.PollsRepository;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Poll;
@@ -15,6 +17,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/polls")
 public class VotesService {
+
+    @Autowired
+    private AnagService anagService;
 
     @Autowired
     private PollsRepository pollsRepository;
@@ -50,17 +55,22 @@ public class VotesService {
 
     @PostMapping("/{pollNumber}/options/{optionId}/{userId}")
     public void vote(@PathVariable long pollNumber, @PathVariable long optionId, @PathVariable String userId) {
-        // TODO check anag-service for userId
-        final Optional<PollOption> pollOption =
-                this.pollOptionsRepository.findById(new PollOption.PollOptionId(pollNumber, optionId));
-        if (pollOption.isPresent()) {
-            final PollOption existentPollOption = pollOption.get();
-            existentPollOption.setVotes(existentPollOption.getVotes() + 1);
-            this.pollOptionsRepository.save(existentPollOption);
+        final Optional<User> targetUser = this.anagService.findUser(userId);
+        if (targetUser.isPresent()) {
+            final Optional<PollOption> pollOption =
+                    this.pollOptionsRepository.findById(new PollOption
+                            .PollOptionId(pollNumber, optionId));
+            if (pollOption.isPresent()) {
+                final PollOption existentPollOption = pollOption.get();
+                existentPollOption.setVotes(existentPollOption.getVotes() + 1);
+                this.pollOptionsRepository.save(existentPollOption);
 
-            // TODO grant points for voting
+                // TODO grant points for voting
+            } else {
+                throw new IllegalArgumentException("Option " + optionId + " for poll " + pollNumber + " not found");
+            }
         } else {
-            throw new IllegalArgumentException("Option " + optionId + " for poll " + pollNumber + " not found");
+            throw new IllegalArgumentException("Voting user doesn't exists.");
         }
     }
 }

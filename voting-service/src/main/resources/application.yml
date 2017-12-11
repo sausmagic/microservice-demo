@@ -21,6 +21,18 @@ eureka:
     statusPageUrlPath: /actuator/info
     healthCheckUrlPath: /actuator/health
 
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 500
+        readTimeout: 500
+        decode404: true
+        loggerLevel: basic
+  compression:
+    response:
+      enabled: true
+
 server:
   port: 0
 
