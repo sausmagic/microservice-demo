@@ -17,6 +17,7 @@ services:
     networks:
       - microservices
       - mongonet
+      - brokernet
 
   # Outer architecture
   edges-server:
@@ -35,6 +36,12 @@ services:
       - "8761:8761"
     networks:
       - microservices
+  message-broker:
+    image: rabbitmq:3.6-alpine
+    tempfs:
+      - /var/lib/rabbitmq
+    networks:
+      - brokernet
   mongodb:
     image: mongo
     tmpfs:
