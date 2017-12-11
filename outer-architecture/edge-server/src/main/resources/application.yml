@@ -1,14 +1,70 @@
 spring:
   application:
     name: "edge-server"
+  cloud:
+    gateway:
+      routes:
+        - id: user-packages
+          uri: lb://payment-service
+          predicates:
+          - Path=/users/{userid}/packages
+          filters:
+          - SetPath=/packages/user/{userid}
+#          - AddRequestParameter=forUser,{userid}
+          - Hystrix=paymentCommand
+        - id: buy-package
+          uri: lb://payment-service
+          predicates:
+          - Path=/users/{userid}/packages/{packageCode}
+          filters:
+          - SetPath=/packages/{packageCode}/user/{userid}
+          - Hystrix=paymentCommand
+        - id: user-data
+          uri: lb://anag-service
+          predicates:
+          - Path=/users/**
+          filters:
+          - Hystrix=usersCommand
+        - id: all-packages
+          uri: lb://payment-service
+          predicates:
+          - Path=/packages
+          filters:
+          - Hystrix=paymentCommand
+        - id: generate-billings
+          uri: lb://payment-service
+          predicates:
+          - Method=POST
+          - Path=/billings
+          filters:
+          - Hystrix=paymentCommand
+        - id: bill-details
+          uri: lb://payment-service
+          predicates:
+          - Path=/billings/{billId}
+          filters:
+          - Hystrix=paymentCommand
+        - id: pay-bill
+          uri: lb://payment-service
+          predicates:
+          - Method=PUT
+          - Path=/billings/{billId}
+          filters:
+          - Hystrix=paymentCommand
 
 hystrix:
   command:
-    anag-service:
+    usersCommand:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds:
+            timeoutInMilliseconds: 30000
+    paymentCommand:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+
 eureka:
   client:
     healthcheck:
@@ -21,11 +77,6 @@ eureka:
 
 server:
   port: 8080
-
-zuul:
-  ignoredServices: '*'
-  routes:
-    anag-service: /users/**
 
 ---
 spring:

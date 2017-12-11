@@ -9,12 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>outer-architecture</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>voting-service</artifactId>
 
-    <modules>
-        <module>service-discovery</module>
-        <module>edge-server</module>
-    </modules>
 
 </project>

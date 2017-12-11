@@ -1,17 +1,32 @@
 version: '3'
 services:
+
+  # Inner architecture
   anag-service:
     image: tv-demo-ms/tv-anag-service
     depends_on:
       - eureka-server
     networks:
       - microservices
+  payment-service:
+    image: tv-demo-ms/tv-payment-service
+    links:
+      - mongodb
+      - message-broker
+      - eureka-server
+    networks:
+      - microservices
+      - mongonet
+      - brokernet
+
+  # Outer architecture
   edges-server:
     image: tv-demo-ms/edge-server
     ports:
       - "8080:8080"
     depends_on:
       - anag-service
+      - payment-service
       - eureka-server
     networks:
       - microservices
@@ -21,6 +36,20 @@ services:
       - "8761:8761"
     networks:
       - microservices
+  message-broker:
+    image: rabbitmq:3.6-alpine
+    tempfs:
+      - /var/lib/rabbitmq
+    networks:
+      - brokernet
+  mongodb:
+    image: mongo
+    tmpfs:
+      - /data/db
+      - /data/configdb
+    networks:
+      - mongonet
 
 networks:
   microservices:
+  mongonet:

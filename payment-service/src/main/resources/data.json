@@ -1,0 +1,78 @@
+[
+  {
+    "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package",
+    "id": "a361d23a-0601-46f1-b496-52ea587b571f",
+    "code": "cinema",
+    "name": "cinema",
+    "description": "the most awesome films!",
+    "price": 9
+  },
+  {
+    "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package",
+    "id": "4b837b20-9bcf-4804-86a1-0350e55d69c8",
+    "code": "sport",
+    "name": "sport",
+    "description": "the most exciting games!",
+    "price": 15
+  },
+  {
+    "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package",
+    "id": "13504749-525f-46c4-8127-05051f764281",
+    "code": "box-set",
+    "name": "TV box set",
+    "description": "the most entertaining series!",
+    "price": 12
+  },
+  {
+    "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.CustomerPackage",
+    "customerId": "sample1",
+    "packages": [
+      {
+        "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package",
+        "id": "a361d23a-0601-46f1-b496-52ea587b571f",
+        "code": "cinema",
+        "name": "cinema",
+        "description": "the most awesome films!",
+        "price": 9
+      },
+      {
+        "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package",
+        "id": "4b837b20-9bcf-4804-86a1-0350e55d69c8",
+        "code": "sport",
+        "name": "sport",
+        "description": "the most exciting games!",
+        "price": 15
+      }
+    ]
+  },
+  {
+    "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.CustomerPackage",
+    "customerId": "sample2",
+    "packages": [
+      {
+        "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package",
+        "id": "a361d23a-0601-46f1-b496-52ea587b571f",
+        "code": "cinema",
+        "name": "cinema",
+        "description": "the most awesome films!",
+        "price": 9
+      },
+      {
+        "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package",
+        "id": "4b837b20-9bcf-4804-86a1-0350e55d69c8",
+        "code": "sport",
+        "name": "sport",
+        "description": "the most exciting games!",
+        "price": 15
+      },
+      {
+        "_class": "it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package",
+        "id": "13504749-525f-46c4-8127-05051f764281",
+        "code": "box-set",
+        "name": "TV box set",
+        "description": "the most entertaining series!",
+        "price": 12
+      }
+    ]
+  }
+]
