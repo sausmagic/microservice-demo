@@ -24,7 +24,7 @@
         <module>anag-service</module>
         <module>payment-service</module>
         <module>outer-architecture</module>
-        <module>votingservice</module>
+        <module>voting-service</module>
     </modules>
 
     <properties>

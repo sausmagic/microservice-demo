@@ -18,6 +18,14 @@ services:
       - microservices
       - mongonet
       - brokernet
+  voting-service:
+    image: tv-demo-ms/tv-voting-service
+    links:
+      - message-broker
+      - eureka-server
+    networks:
+      - microservices
+      - brokernet
 
   # Outer architecture
   edges-server:

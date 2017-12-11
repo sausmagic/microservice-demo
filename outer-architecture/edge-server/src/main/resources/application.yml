@@ -51,6 +51,12 @@ spring:
           - Path=/billings/{billId}
           filters:
           - Hystrix=paymentCommand
+        - id: voting-functions
+          uri: lb://voting-service
+          predicates:
+          - Path=/polls/**
+          filters:
+          - Hystrix=votingCommand
 
 hystrix:
   command:

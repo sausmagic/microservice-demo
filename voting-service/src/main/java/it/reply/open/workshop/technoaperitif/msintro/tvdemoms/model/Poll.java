@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.lang.NonNull;
 
 import javax.annotation.Nonnull;
 import javax.persistence.*;
@@ -19,16 +20,13 @@ import java.util.List;
 public class Poll {
 
     @Id
-    @Nonnull
     long id;
 
     @Column(nullable = false)
-    @Nonnull
     String description;
 
     @OneToMany(targetEntity = PollOption.class)
     @JoinColumn(name = "pollid", nullable = false, insertable = false, updatable = false)
-    @Nonnull
     @JsonIgnore
     List<PollOption> options;
 }
