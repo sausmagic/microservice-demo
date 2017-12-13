@@ -10,6 +10,8 @@ spring:
     database-platform: "org.hibernate.dialect.H2Dialect"
     hibernate:
       ddl-auto: "create-drop"
+  rabbitmq:
+    host: 192.168.99.100
 
 eureka:
   client:
@@ -43,7 +45,9 @@ tvapp:
 
 ---
 spring:
-    profiles: docker
+  profiles: docker
+  rabbitmq:
+    host: message-broker
 
 eureka:
   client:

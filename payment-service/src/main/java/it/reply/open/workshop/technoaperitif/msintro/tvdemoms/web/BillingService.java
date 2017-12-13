@@ -1,14 +1,18 @@
 package it.reply.open.workshop.technoaperitif.msintro.tvdemoms.web;
 
+import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.bus.CustomersChannel;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.data.BillingsRepository;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.data.CustomerPackagesRepository;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Bill;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.CustomerPackage;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package;
+import it.reply.open.workshop.technoaperitif.tvdemoms.bus.events.BillPayed;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.integration.support.DefaultMessageBuilderFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +22,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/billings")
 public class BillingService {
+
+    @Autowired
+    private CustomersChannel customerEvents;
 
     @Autowired
     private CustomerPackagesRepository customerPackagesRepository;
@@ -63,7 +70,10 @@ public class BillingService {
 
             // if a new bill has been payed, grant the user some points.
             if (!wasAlreadyPayed && payedBill.isPayed()) {
-                // TODO Assign points for paying bills
+                this.customerEvents.notifyPayments()
+                                   .send(new DefaultMessageBuilderFactory().withPayload(
+                                           new BillPayed(payedBill.getCustomerId(),
+                                                         billId, Instant.now())).build());
             }
         } else {
             throw new IllegalArgumentException("Bill " + billId + " not found.");

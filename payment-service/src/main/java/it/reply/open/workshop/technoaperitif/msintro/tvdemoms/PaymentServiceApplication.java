@@ -1,8 +1,10 @@
 package it.reply.open.workshop.technoaperitif.msintro.tvdemoms;
 
+import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.bus.CustomersChannel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,7 @@ import org.springframework.data.repository.init.Jackson2RepositoryPopulatorFacto
 
 @Configuration
 @ComponentScan
+@EnableBinding(CustomersChannel.class)
 public class PaymentServiceApplication {
 
     public static void main(String[] args) {
