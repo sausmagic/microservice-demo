@@ -21,6 +21,7 @@
     </description>
 
     <modules>
+        <module>commons</module>
         <module>anag-service</module>
         <module>payment-service</module>
         <module>outer-architecture</module>
@@ -95,6 +96,15 @@
                             <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                         </buildArgs>
                     </configuration>
+                    <dependencies>
+                        <!-- Workaround for JDK 9 support -->
+                        <!-- https://github.com/spotify/dockerfile-maven/issues/90 -->
+                        <dependency>
+                            <groupId>javax.activation</groupId>
+                            <artifactId>activation</artifactId>
+                            <version>1.1.1</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
