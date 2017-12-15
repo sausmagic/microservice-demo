@@ -1,4 +1,4 @@
-FROM fabric8/java-alpine-openjdk8-jdk
+FROM fabric8/java-alpine-openjdk8-jre
 
 VOLUME /tmp
 

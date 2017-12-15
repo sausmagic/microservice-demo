@@ -55,7 +55,7 @@ services:
       - microservices
   message-broker:
     image: rabbitmq:3.6-alpine
-    tempfs:
+    tmpfs:
       - /var/lib/rabbitmq
     networks:
       - broker
