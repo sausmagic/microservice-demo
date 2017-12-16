@@ -1,9 +1,10 @@
 package it.reply.open.workshop.technoaperitif.msintro.tvdemoms.web;
 
-import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.collaborators.AnagService;
-import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.collaborators.dto.User;
+import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.bus.FidelityPointsGranter;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.data.PrizesRepository;
+import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.data.UsersPointsRepository;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Prize;
+import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.UserPoints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +16,22 @@ import java.util.Optional;
 public class FidelityService {
 
     @Autowired
-    private AnagService anagService;
+    private PrizesRepository prizesRepository;
 
     @Autowired
-    private PrizesRepository prizesRepository;
+    private UsersPointsRepository usersPointsRepository;
+
+    @Autowired
+    private FidelityPointsGranter granter;
 
     @GetMapping("")
     public Collection<Prize> getPrizeFor(@RequestParam(value = "collectableFrom", required = false) String userId) {
         if (userId == null) {
             return this.prizesRepository.findAll();
         } else {
-            return this.anagService.findUser(userId)
-                                   .map(user -> this.prizesRepository.findByPointsNeededLessThanEqual(
-                                           user.getEarnedPoints()))
+            return this.usersPointsRepository.findById(userId)
+                                   .map(userPoints -> this.prizesRepository.findByPointsNeededLessThanEqual(
+                                           userPoints.getPoints()))
                                    .orElseThrow(() -> new IllegalArgumentException("User " + userId + " not found"));
         }
     }
@@ -40,19 +44,20 @@ public class FidelityService {
     @PutMapping("/{prizeId}")
     public void claimPrize(@PathVariable long prizeId,
                            @RequestParam(value = "claimedBy") String userId) {
-        final Optional<User> possibleUser = this.anagService.findUser(userId);
+        final Optional<UserPoints> possibleUser = this.usersPointsRepository.findById(userId);
         final Optional<Prize> possiblePrize = this.prizesRepository.findById(prizeId);
 
         if (possibleUser.isPresent() && possiblePrize.isPresent()) {
-            final User user = possibleUser.get();
+            final UserPoints user = possibleUser.get();
             final Prize prize = possiblePrize.get();
 
-            if (user.getEarnedPoints() >= prize.getPointsNeeded() && prize.getAvailableInWarehouse() > 0) {
+            if (user.getPoints() >= prize.getPointsNeeded() && prize.getAvailableInWarehouse() > 0) {
                 prize.decrementAvailability();
-                user.setEarnedPoints(user.getEarnedPoints() - prize.getPointsNeeded());
+                user.setPoints(user.getPoints() - prize.getPointsNeeded());
 
                 this.prizesRepository.save(prize);
-                // TODO decrement user points for claimed prize
+
+                this.granter.notifyPointsChange(user);
             } else {
                 throw new IllegalArgumentException("User doesn't have enoough points or no more pieces in warehouse");
             }

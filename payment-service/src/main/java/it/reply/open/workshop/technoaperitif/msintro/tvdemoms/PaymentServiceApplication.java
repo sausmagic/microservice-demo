@@ -1,6 +1,6 @@
 package it.reply.open.workshop.technoaperitif.msintro.tvdemoms;
 
-import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.bus.CustomersChannel;
+import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.bus.PaymentsEventChannel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
@@ -15,7 +15,7 @@ import org.springframework.data.repository.init.Jackson2RepositoryPopulatorFacto
 
 @Configuration
 @ComponentScan
-@EnableBinding(CustomersChannel.class)
+@EnableBinding(PaymentsEventChannel.class)
 public class PaymentServiceApplication {
 
     public static void main(String[] args) {

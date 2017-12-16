@@ -11,7 +11,7 @@ spring:
     hibernate:
       ddl-auto: "create-drop"
   rabbitmq:
-    host: 192.168.99.100
+    host: localhost
 
 feign:
   client:
@@ -39,8 +39,9 @@ server:
   port: 0
 
 tvapp:
-  fedelity:
-    grant-points:
+  fidelity:
+    grantPoints:
+      forPaying: 100
       forVoting: 10
 
 ---
@@ -54,7 +55,13 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka-server:8761/eureka/
   instance:
-    preferIpAddress: true
+    hostname: fidelity-service
 
 server:
     port: 8080
+
+---
+spring:
+  profiles: docker-machine
+  rabbitmq:
+    host: 192.168.99.100

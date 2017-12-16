@@ -1,4 +1,4 @@
-package it.reply.open.workshop.technoaperitif.msintro.tvdemoms.collaborators.dto;
+package it.reply.open.workshop.technoaperitif.tvdemoms.bus.events;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class FidelityPointsGranted {
 
-    String userid;
-    String name;
-    int earnedPoints = 0;
+    String userId;
+
+    int newTotal;
 }

@@ -14,5 +14,5 @@ public interface PrizesRepository extends Repository<Prize, Long> {
 
     Collection<Prize> findByPointsNeededLessThanEqual(int threshold);
 
-    void save(Prize prize);
+    Prize save(Prize prize);
 }

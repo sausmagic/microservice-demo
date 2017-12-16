@@ -6,8 +6,10 @@ services:
     image: tv-demo-ms/tv-anag-service
     depends_on:
       - eureka-server
+      - message-broker
     networks:
       - microservices
+      - broker
   payment-service:
     image: tv-demo-ms/tv-payment-service
     links:
@@ -37,13 +39,15 @@ services:
       - broker
 
   # Outer architecture
-  edges-server:
+  edge-server:
     image: tv-demo-ms/edge-server
     ports:
       - "8080:8080"
-    depends_on:
+    links:
       - anag-service
       - payment-service
+      - voting-service
+      - fidelity-service
       - eureka-server
     networks:
       - microservices
@@ -54,11 +58,13 @@ services:
     networks:
       - microservices
   message-broker:
-    image: rabbitmq:3.6-alpine
+    image: rabbitmq:3.7-management-alpine
     tmpfs:
       - /var/lib/rabbitmq
     networks:
       - broker
+    ports:
+      - "15672:15672"
   mongodb:
     image: mongo
     tmpfs:

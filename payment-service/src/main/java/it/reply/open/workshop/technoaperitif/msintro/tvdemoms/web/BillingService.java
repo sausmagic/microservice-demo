@@ -1,12 +1,13 @@
 package it.reply.open.workshop.technoaperitif.msintro.tvdemoms.web;
 
-import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.bus.CustomersChannel;
+import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.bus.PaymentsEventChannel;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.data.BillingsRepository;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.data.CustomerPackagesRepository;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Bill;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.CustomerPackage;
 import it.reply.open.workshop.technoaperitif.msintro.tvdemoms.model.Package;
 import it.reply.open.workshop.technoaperitif.tvdemoms.bus.events.BillPayed;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.support.DefaultMessageBuilderFactory;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +22,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/billings")
+@Slf4j
 public class BillingService {
 
     @Autowired
-    private CustomersChannel customerEvents;
+    private PaymentsEventChannel paymentsEvents;
 
     @Autowired
     private CustomerPackagesRepository customerPackagesRepository;
@@ -70,7 +72,8 @@ public class BillingService {
 
             // if a new bill has been payed, grant the user some points.
             if (!wasAlreadyPayed && payedBill.isPayed()) {
-                this.customerEvents.notifyPayments()
+                log.info("Signalling a bill payment from user {}", payedBill.getCustomerId());
+                this.paymentsEvents.notifyPayments()
                                    .send(new DefaultMessageBuilderFactory().withPayload(
                                            new BillPayed(payedBill.getCustomerId(),
                                                          billId, Instant.now())).build());

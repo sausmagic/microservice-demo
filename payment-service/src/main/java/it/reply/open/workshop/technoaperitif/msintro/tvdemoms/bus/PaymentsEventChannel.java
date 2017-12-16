@@ -1,12 +1,11 @@
 package it.reply.open.workshop.technoaperitif.msintro.tvdemoms.bus;
 
-import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
 
-public interface CustomersChannel {
-    String NAME = "customer-events";
+public interface PaymentsEventChannel {
+    String NAME = "payment-events";
 
-    @Input(NAME)
+    @Output(NAME)
     MessageChannel notifyPayments();
 }

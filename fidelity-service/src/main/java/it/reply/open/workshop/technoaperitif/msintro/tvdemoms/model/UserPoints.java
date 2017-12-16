@@ -21,12 +21,12 @@ public class UserPoints {
     String userId;
 
     @Column(nullable = false)
-    long points = 0L;
+    int points = 0;
 
     @Version
     long version = 0L;
 
-    public UserPoints(String userId, long points) {
+    public UserPoints(String userId, int points) {
         this.userId = userId;
         this.points = points;
         this.version = 0L;
